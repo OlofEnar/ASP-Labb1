@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ASP_Labb1.Models.LeaveApplication>
+
+<div class="container">
+    <input class="form-control w-25 mb-3" id="myInput" type="text" placeholder="Search..">
+
+    <form method="get" asp-action="Index">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                @{
+                    var selectedMonthName = "Välj månad";
+                    if (ViewBag.SelectedMonth != null)
+                    {
+                        foreach (var month in ViewBag.Months)
+                        {
+                            if (month.Value == ViewBag.SelectedMonth.ToString())
+                            {
+                                selectedMonthName = month.Text;
+                                break;
+                            }
+                        }
+                    }
+                }
+                @selectedMonthName
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="?month=">Alla</a></li>
+                @foreach (var month in ViewBag.Months)
+                {
+                    <li><a class="dropdown-item" href="?month=@month.Value">@month.Text</a></li>
+                }
+            </ul>
+        </div>
+    </form>
+
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Anställd</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveStartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveEndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TotalDays)</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveType)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="leaveTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Employee.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveStartDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveEndDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TotalDays)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveType)</td>
+                    <td>
+                        <a class="badge text-bg-warning" asp-action="Edit" asp-route-id="@item.LeaveId">Ändra</a>
+                        <a class="badge text-bg-danger" asp-action="Delete" asp-route-id="@item.LeaveId">Ta bort</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#leaveTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>

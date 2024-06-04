@@ -1,0 +1,35 @@
+﻿@model ASP_Labb1.Models.LeaveApplication
+
+<h4>@($"{ViewBag.EmployeeFullName}: Ansökan ledighet")</h4>
+
+<div class="col-md-6 col-lg-4">
+	<form asp-action="Create" method="post">
+		<input type="hidden" asp-for="FkEmployeeId" />
+		<div class="form-group mb-3">
+			<label asp-for="LeaveStartDate"></label>
+			<input asp-for="LeaveStartDate" class="form-control" type="date" />
+			<span asp-validation-for="LeaveStartDate" class="text-danger"></span>
+		</div>
+
+		<div class="form-group mb-3">
+			<label asp-for="LeaveEndDate"></label>
+			<input asp-for="LeaveEndDate" class="form-control" type="date" />
+			<span asp-validation-for="LeaveEndDate" class="text-danger"></span>
+		</div>
+
+		<div class="form-group mb-3">
+			<label asp-for="LeaveType"></label>
+			<select asp-for="LeaveType" class="form-control" asp-items="ViewBag.LeaveTypes">
+				<option disabled selected>Ange orsak</option>
+			</select>
+			<span asp-validation-for="LeaveType" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Ansök</button>
+		<a asp-action="Index" class="btn btn-secondary">Tillbaka</a>
+	</form>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

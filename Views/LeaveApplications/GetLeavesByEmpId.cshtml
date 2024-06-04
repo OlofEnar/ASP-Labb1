@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ASP_Labb1.Models.LeaveApplication>
+
+<div class="container">
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Anställd</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveStartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveEndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TotalDays)</th>
+                <th>@Html.DisplayNameFor(model => model.First().LeaveType)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="leaveTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Employee.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveStartDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveEndDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TotalDays)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LeaveType)</td>
+                    <td>
+                        <a class="badge text-bg-warning" asp-action="Edit" asp-route-id="@item.LeaveId">Ändra</a>
+                        <a class="badge text-bg-danger" asp-action="Delete" asp-route-id="@item.LeaveId">Ta bort</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#leaveTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
